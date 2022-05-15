@@ -3,23 +3,7 @@ import { createRoot } from 'react-dom/client';
 import {webgl_support} from './webgl.js';
 import Game from './webgl_react.js'
 import {React, useState} from 'react'
-const vertShader = require('./glsl/vert.glsl');
-const fragShader = require('./glsl/frag.glsl');
-
-
-function static_webgl_buffer(gl, data, type){
-    let buf = gl.createBuffer();
-    gl.bindBuffer(type,buf);
-    gl.bufferData(type, data, gl.STATIC_DRAW, 0);
-    return buf;
-}
-
-function dynamic_webgl_buffer(gl, data, type){
-    let buf = gl.createBuffer();
-    gl.bindBuffer(type,buf);
-    gl.bufferData(type, data, gl.DYNAMIC_DRAW, 0);
-    return buf;
-}
+import {init, render, clean} from './my_game.js'
 
 function HalfLifeAnimation(props){
     return (
@@ -43,40 +27,13 @@ function ProcGenAnimation(props){
 
 
                         if(!this.state.init){
-                            this.setState(prev => ({...prev, init:true}));
-                            console.log("Uploading Shaders...");
-                            let vert = gl.createShader(gl.VERTEX_SHADER);
-                            let frag = gl.createShader(gl.FRAGMENT_SHADER);
-
-                            gl.shaderSource(vert, vertShader);
-                            gl.shaderSource(frag, fragShader);
-
-                            console.log("Compiling Shaders...");
-                            gl.compileShader(vert);
-                            gl.compileShader(frag);
-
-                            this.program = gl.createProgram();
-                            gl.attachShader(this.program, vert);
-                            gl.attachShader(this.program, frag);
-                            gl.linkProgram(this.program);
-
-                            console.log("Setting up render pipeline...");
-
-                            this.lineVertBuf = static_webgl_buffer(gl, [0,0,1,0], gl.ARRAY_BUFFER);
-
-                            console.log("WebGL Game initialized");
+                            init.bind(this)(gl, delta);
                         }
 
                         // if(delta >= 0.017){
                         //     console.warn("WebGL animation slow down :'(");
                         // }
-
-                        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-                        gl.clear(gl.COLOR_BUFFER_BIT);
-
-                        gl.useProgram(this.program);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, this.lineVertBuf);
-                        gl.drawArrays(gl.LINES, 0, 2);
+                        render.bind(this)(gl, delta);
                     }
                 }
             </Game>
@@ -84,10 +41,50 @@ function ProcGenAnimation(props){
     );
 }
 
+function SplashMsg(props){
+    // Returns either 0, 1, or 2
+    let type = Math.floor(Math.random() * 3);
+    const splashes = ["Do-oer of things"];
+
+    switch(type){
+        // Interface with GitHub
+        case 0:
+            // Check cookies for cache
+            return (<h2>
+                GitHub
+            </h2>);
+        // Latest tweet
+        case 1:
+            // Check cookies for cache
+            return (<h2>
+                Tweet
+            </h2>);
+        // Random text msg
+        case 2:
+            let r = Math.floor(Math.random() * splashes.length);
+            return (<h2>
+                {splashes[r]}
+            </h2>);
+    }
+}
+
 function Profile(props){
+    return (
+    <div style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%'
+    }}>
+        <h1>Andros Yang</h1>
+        <SplashMsg/>
+    </div>
+    );
 }
 
 function Debug(props){
+    return (<div style={{position:'absolute'}}>
+
+    </div>);
 }
 
 function Animation(props){

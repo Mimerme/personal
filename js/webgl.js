@@ -32,3 +32,17 @@ export default class WebGL{
     }
 
 }
+
+export function static_webgl_buffer(gl, data, type){
+    let buf = gl.createBuffer();
+    gl.bindBuffer(type,buf);
+    gl.bufferData(type, data, gl.STATIC_DRAW, 0);
+    return buf;
+}
+
+export function dynamic_webgl_buffer(gl, data, type){
+    let buf = gl.createBuffer();
+    gl.bindBuffer(type,buf);
+    gl.bufferData(type, data, gl.DYNAMIC_DRAW, 0);
+    return buf;
+}
