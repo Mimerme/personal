@@ -36,6 +36,12 @@ module.exports = {
             presets: [["@babel/preset-react", {"runtime": "automatic"}]]
           }
         }
+      },
+      {
+        test: /\.glsl$/,
+        use :{
+          loader: 'webpack-glsl-loader'
+        }
       }
     ]
   }
