@@ -1,9 +1,12 @@
 import("../pkg/index.js").catch(console.error);
 import { createRoot } from 'react-dom/client';
-import {webgl_support} from './webgl.js';
+import {webgl_support, hashCode} from './webgl.js';
+import SeedRandom from './seed_random.js';
 import Game from './webgl_react.js'
 import {React, useState} from 'react'
 import {init, render, clean} from './my_game.js'
+import Debug from './components/debug.js'
+import Profile from './components/profile.js'
 
 function HalfLifeAnimation(props){
     return (
@@ -15,7 +18,6 @@ function HalfLifeAnimation(props){
 function ProcGenAnimation(props){
     return (
         <>
-            <Profile/>
             <Game>
                 {
                     // This function has the 'Game' React.Component ref bound as 'this'
@@ -41,51 +43,6 @@ function ProcGenAnimation(props){
     );
 }
 
-function SplashMsg(props){
-    // Returns either 0, 1, or 2
-    let type = Math.floor(Math.random() * 3);
-    const splashes = ["Do-oer of things"];
-
-    switch(type){
-        // Interface with GitHub
-        case 0:
-            // Check cookies for cache
-            return (<h2>
-                GitHub
-            </h2>);
-        // Latest tweet
-        case 1:
-            // Check cookies for cache
-            return (<h2>
-                Tweet
-            </h2>);
-        // Random text msg
-        case 2:
-            let r = Math.floor(Math.random() * splashes.length);
-            return (<h2>
-                {splashes[r]}
-            </h2>);
-    }
-}
-
-function Profile(props){
-    return (
-    <div style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%'
-    }}>
-        <h1>Andros Yang</h1>
-        <SplashMsg/>
-    </div>
-    );
-}
-
-function Debug(props){
-    return (<div style={{position:'absolute'}}>
-
-    </div>);
-}
 
 function Animation(props){
     if (webgl_support()){
@@ -99,9 +56,11 @@ function Animation(props){
 }
 
 function App(props) {
-    return (<>
+
+    return (
+    <>
         <Debug debug={props.debug}/>
-        <Profile/>
+        <Profile random={new SeedRandom()} seed={hashCode(props.seed)}/>
         <Animation/>
     </>);
 }
@@ -110,4 +69,4 @@ function App(props) {
 const div_root = document.createElement("div");
 document.body.appendChild(div_root);
 const root = createRoot(div_root);
-root.render(<App debug="false"/>);
+root.render(<App debug="false" seed="69420"/>);

@@ -35,3 +35,10 @@ export default class Game extends React.Component{
         this.gl.start_anim(this.render_function);
     }
 }
+
+
+
+export function GameFunctional(props){
+    return (<canvas ref={this.canvas_ref} 
+        width={this.state.width} height={this.state.height}></canvas>);
+}
