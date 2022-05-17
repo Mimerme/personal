@@ -37,7 +37,7 @@ export default class Game extends React.Component{
 }
 
 
-
+// Reimplementation of the above with hooks
 export function GameFunctional(props){
     return (<canvas ref={this.canvas_ref} 
         width={this.state.width} height={this.state.height}></canvas>);

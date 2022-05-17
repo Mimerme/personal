@@ -1,0 +1,31 @@
+:root {
+    --color-one: #06326B;
+    --color-two: #0D0B0C;
+    --color-three: #292B52;
+    --color-four: #29524D;
+    --color-five: #2C4867;
+}
+
+@font-face {
+    font-family: Exo;
+    src: url(fonts/Exo-VariableFont_wght.ttf);
+}
+
+
+@font-face {
+    font-family: HindGuntur;
+    src: url(fonts/HindGuntur-Regular.ttf);
+}
+
+@font-face {
+    font-family: Karla;
+    src: url(fonts/Karla-VariableFont_wght.ttf);
+}
+
+h1 {
+    font-family: HindGuntur;
+}
+
+h2 {
+    font-family: HindHuntur;
+}
