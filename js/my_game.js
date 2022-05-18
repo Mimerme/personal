@@ -1,6 +1,4 @@
-import { static_webgl_buffer, dynamic_webgl_buffer } from './webgl';
-const vertShader = require('./glsl/vert.glsl');
-const fragShader = require('./glsl/frag.glsl');
+import { BufferUtils, ShaderUtils } from './webgl';
 
 export function init(gl, delta){
     // this function is called from React.Component.render() so this needs to be done
@@ -16,29 +14,39 @@ export function init(gl, delta){
     console.log("Uploading Shaders...");
     let vert = gl.createShader(gl.VERTEX_SHADER);
     let frag = gl.createShader(gl.FRAGMENT_SHADER);
+    let frac_frag = gl.createShader(gl.FRAGMENT_SHADER);
+
+    const vertShader = require('./glsl/vert.glsl');
+    const fragShader = require('./glsl/frag.glsl');
+    const fracShader = require('./glsl/frac.glsl');
+
 
     gl.shaderSource(vert, vertShader);
     gl.shaderSource(frag, fragShader);
+    gl.shaderSource(frac_frag, fracShader);
 
     console.log("Compiling Shaders...");
     gl.compileShader(vert);
     gl.compileShader(frag);
+    gl.compileShader(frac_frag);
 
-    // Check if the shaders compile
-    let vertMsg = gl.getShaderInfoLog(vert);
-    let fragMsg = gl.getShaderInfoLog(frag);
+    ShaderUtils.checkShaderErrors(gl, [vert, frag, frac_frag]);
 
-    if (vertMsg.length > 0) {
-        throw vertMsg;
-    }
-    if (fragMsg.length > 0) {
-        throw fragMsg;
-    }
+    // // Check if the shaders compile
+    // let vertMsg = gl.getShaderInfoLog(vert);
+    // let fragMsg = gl.getShaderInfoLog(frag);
+
+    // if (vertMsg.length > 0) {
+    //     throw vertMsg;
+    // }
+    // if (fragMsg.length > 0) {
+    //     throw fragMsg;
+    // }
 
 
     this.program = gl.createProgram();
     gl.attachShader(this.program, vert);
-    gl.attachShader(this.program, frag);
+    gl.attachShader(this.program, frac_frag);
     gl.linkProgram(this.program);
 
     // Check if the program links properly
@@ -47,13 +55,14 @@ export function init(gl, delta){
         throw programMsg;
     }
 
-    gl.deleteShader(vert);
-    gl.deleteShader(frag);
+    ShaderUtils.deleteShaders(gl, [vert, frag,frac_frag]);
+    // gl.deleteShader(vert);
+    // gl.deleteShader(frag);
 
     console.log("Setting up render pipeline...");
 
     let verts = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0];
-    this.lineVertBuf = static_webgl_buffer(gl, verts, gl.ARRAY_BUFFER);
+    this.lineVertBuf = BufferUtils.static_webgl_buffer(gl, verts, gl.ARRAY_BUFFER);
     let posAttr = gl.getAttribLocation(this.program, "position");
     gl.enableVertexAttribArray(posAttr);
     gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, gl.FALSE, 0, 0);

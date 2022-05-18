@@ -1,6 +1,6 @@
 import("../pkg/index.js").catch(console.error);
 import { createRoot } from 'react-dom/client';
-import {webgl_support, hashCode} from './webgl.js';
+import {WebGL, hashCode, GLUtils} from './webgl.js';
 import SeedRandom from './seed_random.js';
 import Game from './webgl_react.js'
 import {React, useState} from 'react'
@@ -45,7 +45,7 @@ function ProcGenAnimation(props){
 
 
 function Animation(props){
-    if (webgl_support()){
+    if (GLUtils.webgl_support()){
         console.log("WebGL supported :)");
         return (<ProcGenAnimation/>)
     }
@@ -60,7 +60,7 @@ function App(props) {
     return (
     <>
         <Debug debug={props.debug}/>
-        <Profile random={new SeedRandom()} seed={hashCode(props.seed)}/>
+        <Profile random={new SeedRandom()} seed={SeedRandom.hashCode(props.seed)}/>
         <Animation/>
     </>);
 }
