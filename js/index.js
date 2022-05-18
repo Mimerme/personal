@@ -1,7 +1,7 @@
 import("../pkg/index.js").catch(console.error);
 import { createRoot } from 'react-dom/client';
-import {WebGL, hashCode, GLUtils} from './webgl.js';
-import SeedRandom from './seed_random.js';
+import {WebGL, hashCode, GLUtils} from './lib/webgl.js';
+import SeedRandom from './lib/seed_random.js';
 import Game from './webgl_react.js'
 import {React, useState} from 'react'
 import {init, render, clean} from './my_game.js'

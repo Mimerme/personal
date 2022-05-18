@@ -1,4 +1,4 @@
-import { BufferUtils, ShaderUtils } from './webgl';
+import { BufferUtils, ShaderUtils } from './lib/webgl';
 
 export function init(gl, delta){
     // this function is called from React.Component.render() so this needs to be done

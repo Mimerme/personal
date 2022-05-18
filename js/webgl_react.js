@@ -1,5 +1,5 @@
 import React from 'react'
-import WebGL from './webgl.js';
+import WebGL from './lib/webgl.js';
 
 // Hooks into a bunch of browser JS and React stuff
 export default class Game extends React.Component{
