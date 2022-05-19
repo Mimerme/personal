@@ -15,6 +15,7 @@ function HalfLifeAnimation(props){
     )
 }
 
+// The Game component is the bridge between the React event loop and WebGL graphics layer
 function ProcGenAnimation(props){
     return (
         <>
@@ -26,7 +27,6 @@ function ProcGenAnimation(props){
                     function(gl, delta){
                         let width = this.state.width;
                         let height = this.state.height;
-
 
                         if(!this.state.init){
                             init.bind(this)(gl, delta);

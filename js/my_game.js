@@ -1,11 +1,19 @@
-import { BufferUtils, ShaderUtils } from './lib/webgl';
+import { BufferUtils, ShaderUtils, UniformUtils } from './lib/webgl';
 
-export function init(gl, delta){
-    // this function is called from React.Component.render() so this needs to be done
-    this.setState(prev => ({...prev, init:true}));
+
+export function init(gl, delta) {
+    // Initialize React.Component State and flag that Vanilla is initialized
+    // STATE LAYOUT
+    /*{
+        width:...,
+        height:...,
+        init:...,
+    }*/
+    this.setState(prev => ({ ...prev, init: true }));
+    //this.setState(prev => ({...prev, width}));
 
     // Initialize OpenGL features here
-    gl.clearColor(0.5,0.5, 0.5, 1);
+    gl.clearColor(0.5, 0.5, 0.5, 1);
     gl.disable(gl.BLEND);
     gl.stencilMask(gl.FALSE);
     gl.enable(gl.DEPTH_TEST);
@@ -55,7 +63,7 @@ export function init(gl, delta){
         throw programMsg;
     }
 
-    ShaderUtils.deleteShaders(gl, [vert, frag,frac_frag]);
+    ShaderUtils.deleteShaders(gl, [vert, frag, frac_frag]);
     // gl.deleteShader(vert);
     // gl.deleteShader(frag);
 
@@ -73,19 +81,20 @@ export function init(gl, delta){
     console.log("WebGL Game initialized");
 }
 
-export function render(gl, delta){
+export function render(gl, delta) {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     // Begin running the render pipeline here
     gl.useProgram(this.program);
+    UniformUtils.setUniform(gl, this.program, "u_resolution", new Float32Array([this.state.width, this.state.height]), gl.uniform2fv);
     // Virst vert
     gl.bindBuffer(gl.ARRAY_BUFFER, this.lineVertBuf);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
-export function clean(gl){
+export function clean(gl) {
     gl.deleteBuffer(this.lineVertBuf);
-    for (let f in gl.fbos){
+    for (let f in gl.fbos) {
         gl.deleteFramebuffer(f);
     }
 }

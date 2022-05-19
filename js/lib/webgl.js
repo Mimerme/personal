@@ -8,6 +8,17 @@ export class GLUtils{
             return false;
         }
     }
+
+    // TODO; idk. I don't nthink this works
+    static webgl2_support() {
+        try {
+            var canvas = document.createElement('canvas');
+            return !!window.WebGLRenderingContext &&
+                (canvas.getContext('webgl2'));
+        } catch (e) {
+            return false;
+        }
+    }
 }
 
 export default class WebGL{
@@ -66,6 +77,14 @@ export class BufferUtils{
         gl.bindBuffer(type,buf);
         gl.bufferData(type, new Float32Array(data), gl.DYNAMIC_DRAW);
         return buf;
+    }
+}
+
+//https://stackoverflow.com/questions/31049910/setting-uniforms-in-webgl
+export class UniformUtils{
+    static setUniform(gl, program, name, data, type_function){
+        let loc =gl.getUniformLocation(program, name);
+        type_function.bind(gl)(loc, data);
     }
 }
 
