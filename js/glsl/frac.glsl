@@ -72,5 +72,5 @@ int iterTillDiverge(vec2 c){
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
 
-    gl_FragColor = vec4(1.0,0.0,1.0,1.0);
+    gl_FragColor = vec4(u_resolution.x / 1920.0,0.0,0.0,1.0);
 }
