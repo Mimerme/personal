@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import {WebGL, hashCode, GLUtils} from './lib/webgl.js';
 import SeedRandom from './lib/seed_random.js';
 import Game from './webgl_react.js'
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import {init, render, clean} from './my_game.js'
 import Debug from './components/debug.js'
 import Profile from './components/profile.js'
@@ -45,8 +45,27 @@ function ProcGenAnimation(props){
 
 
 function Animation(props){
+    // NOTE: Wrapping these promises within a functional React.Component will create new ones every render()
+    //navigator.getBattery().then((battery) => {
+    //})
+    // USE effect is best to avoid this
+    let [batLevel, setBatLevel] = useState(1.0);
+    useEffect(() => {
+        async function getBatLevel(){
+            let battery = await navigator.getBattery();
+            setBatLevel(battery.level);
+        }
+        getBatLevel();
+    },[]);
+    
     if (GLUtils.webgl_support()){
         console.log("WebGL supported :)");
+
+        console.log(batLevel);
+        if (batLevel <= 0.25){
+            console.log("Battery too low. Running SVG animation");
+            return (<HalfLifeAnimation/>)
+        }
         return (<ProcGenAnimation/>)
     }
     else {
