@@ -6,6 +6,12 @@
     --color-five: #2C4867;
 }
 
+.particle {
+    transform:  perspective(90cm) 
+                rotate3d(0, 1, 0, 89deg) 
+                translate3d(-15cm, 0cm, -30cm);
+}
+
 @font-face {
     font-family: Exo;
     src: url(fonts/Exo-VariableFont_wght.ttf);
@@ -24,8 +30,11 @@
 
 h1 {
     font-family: HindGuntur;
+    color: var(--color-one);
+    text-shadow: 3px 3px var(--color-two);
 }
 
 h2 {
-    font-family: HindHuntur;
+    font-family: HindGuntur;
+    color: var(--color-three);
 }

@@ -33,7 +33,10 @@ precision mediump float;
 
 
 /* Width and height of screen in pixels */ 
-uniform vec2 u_resolution;
+uniform vec2      u_resolution;
+uniform float     u_time;                 // shader playback time (in seconds)
+uniform float     u_timeDelta;            // render time (in seconds)
+uniform int       u_frame;                // shader playback frame
 
 
 /* Point on the complex plane that will be mapped to the center of the screen */
@@ -46,6 +49,10 @@ plane is displayed. */
 //uniform float u_zoomSize;
 
 const int threshold = 100;
+const vec2 realX = vec2(-0.22, -0.219);
+const vec2 imagY = vec2(-0.70,-0.699);
+
+// This is the meat that creates the visualization 
 int iterTillDiverge(vec2 c){
     vec2 z = vec2(0,0);
 
@@ -62,6 +69,13 @@ int iterTillDiverge(vec2 c){
     return j;
 }
 
+// Given a bounded axis and the ratio of the distance from the start
+// Get the position
+float axisRatio(vec2 axis, float ratio){
+    float length = axis.y - axis.x;
+    return axis.x + length * ratio;
+}
+
 // PREDEFINED FIELDS
 //mediump vec4 gl_FragCoord;
 //bool gl_FrontFacing;
@@ -71,6 +85,10 @@ int iterTillDiverge(vec2 c){
 
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
+    int res = iterTillDiverge(gl_FragCoord.xy);
 
-    gl_FragColor = vec4(u_resolution.x / 1920.0,0.0,0.0,1.0);
+    vec2 pt = vec2(axisRatio(realX, uv.x), axisRatio(imagY, uv.y));
+    float ret = (float(iterTillDiverge(pt)) / float(threshold));
+
+    gl_FragColor = vec4(0.0,0.0,0.0,ret);
 }

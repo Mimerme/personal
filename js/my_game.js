@@ -69,7 +69,10 @@ export function init(gl, delta) {
 
     console.log("Setting up render pipeline...");
 
-    let verts = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0];
+    // let verts = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 
+    //             1.0, -1.0, 1.0, 1.0, 1.0, -1.0];
+    let verts = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0,
+                -1.0, 1.0, 1.0, 1.0, 1.0, -1.0];
     this.lineVertBuf = BufferUtils.static_webgl_buffer(gl, verts, gl.ARRAY_BUFFER);
     let posAttr = gl.getAttribLocation(this.program, "position");
     gl.enableVertexAttribArray(posAttr);
@@ -81,15 +84,25 @@ export function init(gl, delta) {
     console.log("WebGL Game initialized");
 }
 
+let frameCount = 0;
+let runTime = 0.0;
+
 export function render(gl, delta) {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     // Begin running the render pipeline here
     gl.useProgram(this.program);
     UniformUtils.setUniform(gl, this.program, "u_resolution", new Float32Array([this.state.width, this.state.height]), gl.uniform2fv);
+    UniformUtils.setUniform(gl, this.program, "u_time", Math.fround(runTime), gl.uniform1f);
+    UniformUtils.setUniform(gl, this.program, "u_timeDelta", Math.fround(0.0), gl.uniform1f);
+    UniformUtils.setUniform(gl, this.program, "u_frame", Math.fround(frameCount), gl.uniform1i);
+
     // Virst vert
     gl.bindBuffer(gl.ARRAY_BUFFER, this.lineVertBuf);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+    frameCount += 1;
+    runTime += delta;
 }
 
 export function clean(gl) {
