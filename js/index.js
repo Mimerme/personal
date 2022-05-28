@@ -11,10 +11,11 @@ import Profile from './components/profile.js'
 function Particle(props){
     let cssTransform = [];
 
+    // <svg viewBox="0 0 50.5 0.5" className="gameobject particle" style={cssTransform}>
+    //     <path d="M 0 0 L 50 0" stroke="#FFFFFF" strokeWidth="0.5"/>
+    // </svg>
     return(
-        <svg viewbox="0 0 50.5 0.5" class="gameobject" style={cssTransform}>
-            <path d="M 0 0 L 50 0" stroke="#000" stroke-width="0.5"/>
-        </svg>
+        <div className="particle"></div>
     );
 }
 
@@ -28,15 +29,16 @@ function HalfLifeAnimation(props){
     let y = props.startY;
     let z = props.startZ;
 
-    let [particles, setParticles] = useState([]);
-    for (x in Array(particleCount).keys()) {
-        particles.append(<Particle x={x} y={y} z={z}/>);
-    }
-    setParticles(particles);
+    let init = Array(particleCount)
+    // ffill() needs to be called because Javascript map() skips undefined elements
+    .fill(0)
+    .map((elem, idx) => {return (<Particle x={0} y={0} z={0} class="particle" key={idx}/>)});
+    let [particles, setParticles] = useState(init);
+    console.log(init);
 
-    return ({
-            particles 
-    });
+    return (<>
+        {particles}
+    </>);
 }
 
 // The Game component is the bridge between the React event loop and WebGL graphics layer
@@ -74,38 +76,44 @@ function Animation(props){
     //})
     // useEffect is the best option to avoid this
     // A general rule of thumb is that async functions in React go into useEffect becuz React is asyncronisly designed
-    let [batLevel, setBatLevel] = useState(1.0);
-    useEffect(() => {
-        async function getBatLevel(){
-            let battery = await navigator.getBattery();
-            setBatLevel(battery.level);
-        }
-        getBatLevel();
-    },[]);
+    // let [batLevel, setBatLevel] = useState(1.0);
+    // useEffect(() => {
+    //     async function getBatLevel(){
+    //         try {
+    //             let battery = await navigator.getBattery();
+    //             setBatLevel(battery.level);
+    //         }
+    //         catch(e){
+    //             console.log("No battery detected");
+    //         }
+    //     }
+    //     getBatLevel();
+    // },[]);
     
     if (GLUtils.webgl_support()){
         console.log("WebGL supported :)");
 
-        console.log(batLevel);
-        if (batLevel <= 0.25){
-            console.log("Battery too low. Running SVG animation");
-            return (<HalfLifeAnimation/>)
-        }
+        // if (batLevel <= 0.25){
+        //     console.log("Battery too low. Running SVG animation");
+        //     return (<HalfLifeAnimation count={1}/>);
+        // }
         return (<FractalAnimation/>)
     }
     else {
         console.log("WebGL not supported :(");
-        return (<HalfLifeAnimation/>);
+        // return (<HalfLifeAnimation count={1}/>);
     }
 }
 
 function App(props) {
+    let seedEngine = new SeedRandom();
+    let seed = SeedRandom.hashCode(props.seed);
 
     return (
     <>
         <Debug debug={props.debug}/>
-        <Profile random={new SeedRandom()} seed={SeedRandom.hashCode(props.seed)}/>
-        <Animation/>
+        <Profile random={seedEngine} seed={seed}/>
+        <Animation random={seedEngine} seed={seed}/>
     </>);
 }
 

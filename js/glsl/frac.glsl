@@ -38,6 +38,9 @@ uniform float     u_time;                 // shader playback time (in seconds)
 uniform float     u_timeDelta;            // render time (in seconds)
 uniform int       u_frame;                // shader playback frame
 
+uniform vec2 u_zoom;
+
+
 
 /* Point on the complex plane that will be mapped to the center of the screen */
 //uniform vec2 u_zoomCenter;
@@ -87,8 +90,17 @@ void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
     int res = iterTillDiverge(gl_FragCoord.xy);
 
-    vec2 pt = vec2(axisRatio(realX, uv.x), axisRatio(imagY, uv.y));
+
+    // vec2 zoomX = realX + vec2(-u_zoom.x,+u_zoom.x);
+    // vec2 zoomY = imagY + vec2(-u_zoom.y,+u_zoom.y);
+
+    // vec2 zoomX = realX - vec2((-0.01 * float(u_frame)),(0.01*float(u_frame)));
+    // vec2 zoomY = imagY - vec2(-0.01 * float(u_frame),+0.01*float(u_frame));
+    vec2 zoomX = realX * (float(u_frame) / 1000.0);
+    vec2 zoomY = imagY * (float(u_frame) / 1000.0);
+
+    vec2  pt = vec2(axisRatio(zoomX, uv.x), axisRatio(zoomY, uv.y));
     float ret = (float(iterTillDiverge(pt)) / float(threshold));
 
-    gl_FragColor = vec4(0.0,0.0,0.0,ret);
+    gl_FragColor = vec4(ret,ret,ret,1.0-ret);
 }

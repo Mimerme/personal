@@ -7,9 +7,37 @@
 }
 
 .particle {
-    transform:  perspective(90cm) 
-                rotate3d(0, 1, 0, 89deg) 
-                translate3d(-15cm, 0cm, -30cm);
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-duration: 5s;
+    animation-name: backwards;
+
+    background-color:white;
+    position: absolute;
+    /* perspective: 10cm;
+    perspective-origin: center; */
+
+    width: 500px;
+    height: 5px;
+
+
+}
+
+@keyframes backwards {
+    0%{
+        transform:  
+                    perspective(25cm)
+                    translate3d(0cm, 0cm, 0cm)
+                    rotateY(89deg);
+    }
+    100%{
+        transform:  
+                    perspective(25cm)
+                    translate3d(0cm, 0cm, 25cm)
+                    rotateY(89deg);
+    }
+    /*We don't have a clipping plane so we gotta do it ourselves*/
 }
 
 @font-face {

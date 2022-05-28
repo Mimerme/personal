@@ -96,6 +96,7 @@ export function render(gl, delta) {
     UniformUtils.setUniform(gl, this.program, "u_time", Math.fround(runTime), gl.uniform1f);
     UniformUtils.setUniform(gl, this.program, "u_timeDelta", Math.fround(0.0), gl.uniform1f);
     UniformUtils.setUniform(gl, this.program, "u_frame", Math.fround(frameCount), gl.uniform1i);
+    UniformUtils.setUniform(gl, this.program, "u_zoom", new Float32Array([0.5, 0.5]), gl.uniform2fv);
 
     // Virst vert
     gl.bindBuffer(gl.ARRAY_BUFFER, this.lineVertBuf);
