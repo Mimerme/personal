@@ -96,11 +96,14 @@ void main() {
 
     // vec2 zoomX = realX - vec2((-0.01 * float(u_frame)),(0.01*float(u_frame)));
     // vec2 zoomY = imagY - vec2(-0.01 * float(u_frame),+0.01*float(u_frame));
-    vec2 zoomX = realX * (float(u_frame) / 1000.0);
-    vec2 zoomY = imagY * (float(u_frame) / 1000.0);
+    //vec2 zoomX = realX * (float(u_frame) / 1000.0);
+    //vec2 zoomY = imagY * (float(u_frame) / 1000.0);
+    vec2 zoomX  = realX * u_zoom.x;
+    vec2 zoomY  = imagY * u_zoom.y;
 
     vec2  pt = vec2(axisRatio(zoomX, uv.x), axisRatio(zoomY, uv.y));
     float ret = (float(iterTillDiverge(pt)) / float(threshold));
 
-    gl_FragColor = vec4(ret,ret,ret,1.0-ret);
+    //gl_FragColor = vec4(ret,ret,ret,1.0-ret);
+    gl_FragColor = vec4(u_zoom[0], 0.0, 0.0,1.0);
 }

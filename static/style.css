@@ -59,7 +59,7 @@
 h1 {
     font-family: HindGuntur;
     color: var(--color-one);
-    text-shadow: 3px 3px var(--color-two);
+    /*text-shadow: 3px 3px var(--color-two);*/
 }
 
 h2 {

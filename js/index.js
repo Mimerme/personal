@@ -4,7 +4,7 @@ import {WebGL, hashCode, GLUtils} from './lib/webgl.js';
 import SeedRandom from './lib/seed_random.js';
 import Game from './webgl_react.js'
 import {React, useState, useEffect} from 'react'
-import {init, render, clean} from './my_game.js'
+import {init, render, clean, MyGame} from './my_game.js'
 import Debug from './components/debug.js'
 import Profile from './components/profile.js'
 
@@ -43,28 +43,10 @@ function HalfLifeAnimation(props){
 
 // The Game component is the bridge between the React event loop and WebGL graphics layer
 function FractalAnimation(props){
+    let [zoom, setZoom] = useState([1.0, 1.0]);
     return (
         <>
-            <Game>
-                {
-                    // This function has the 'Game' React.Component ref bound as 'this'
-                    // Thus, if the game needs to interact with React it uses .setState (debugging UI)
-                    // Otherwise it can just use vanilla JS fields (OpenGL buffer bindings)
-                    function(gl, delta){
-                        let width = this.state.width;
-                        let height = this.state.height;
-
-                        if(!this.state.init){
-                            init.bind(this)(gl, delta);
-                        }
-
-                        // if(delta >= 0.017){
-                        //     console.warn("WebGL animation slow down :'(");
-                        // }
-                        render.bind(this)(gl, delta);
-                    }
-                }
-            </Game>
+            <MyGame/>
         </>
     );
 }
@@ -108,6 +90,8 @@ function Animation(props){
 function App(props) {
     let seedEngine = new SeedRandom();
     let seed = SeedRandom.hashCode(props.seed);
+
+    
 
     return (
     <>

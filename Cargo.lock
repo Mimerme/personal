@@ -115,6 +115,7 @@ dependencies = [
  "console_error_panic_hook",
  "futures",
  "js-sys",
+ "tween",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wasm-bindgen-test",
@@ -138,6 +139,12 @@ dependencies = [
  "quote 1.0.18",
  "unicode-xid 0.2.3",
 ]
+
+[[package]]
+name = "tween"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "63e9aab86b1958c0ff7f3d18d04abd6d8e583d237f92e88191ce5c7bf481c5ec"
 
 [[package]]
 name = "unicode-xid"

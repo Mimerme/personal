@@ -2,19 +2,20 @@ import React from 'react'
 import WebGL from './lib/webgl.js';
 
 // Hooks into a bunch of browser JS and React stuff
-export default class Game extends React.Component{
+export class Game extends React.Component{
     constructor(props){
         super(props);
-        this.canvas_ref = React.createRef();
+
+        this.canvas = React.createRef();
         this.state = {
             width:window.innerWidth,
             height:window.innerHeight,
-            init: false
         };
+
+        // gl context is set after added to the DOM
         this.gl = null;
 
         // Register callback functions here
-        this.render_function = props.children.bind(this);
 
         // Window Event Handlers
         window.onresize = function(){
@@ -26,14 +27,33 @@ export default class Game extends React.Component{
 
 
     render(){
-        return (<canvas ref={this.canvas_ref} 
-            width={this.state.width} height={this.state.height}></canvas>);
+        return (<canvas ref={this.canvas} 
+            width={this.state.width} height={this.state.height} 
+            onWheel={this.onWheel.bind(this)}></canvas>);
     }
 
     componentDidMount(){
-        this.gl = new WebGL(this.canvas_ref.current);
-        this.gl.start_anim(this.render_function);
+        this.gl = new WebGL(this.canvas.current);
+        this.glInit(this.gl.ctx);
+        this.gl.start_anim(this.glRender.bind(this));
     }
+
+    onWheel(){
+        throw "Needs implementation";
+    }
+
+    glInit(gl){
+        throw "Needs implementation";
+    }
+
+    glRender(gl, delta){
+        throw "Needs implementation";
+    }
+
+    glClean(){
+        throw "Needs implementation";
+    }
+
 }
 
 
