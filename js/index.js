@@ -4,7 +4,7 @@ import {WebGL, hashCode, GLUtils} from './lib/webgl.js';
 import SeedRandom from './lib/seed_random.js';
 import Game from './webgl_react.js'
 import {React, useState, useEffect} from 'react'
-import {init, render, clean, MyGame} from './my_game.js'
+import {init, render, clean, MyGame} from './toys/my_game.js'
 import Debug from './components/debug.js'
 import Profile from './components/profile.js'
 

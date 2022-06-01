@@ -1,5 +1,5 @@
-import { BufferUtils, ShaderUtils, UniformUtils } from './lib/webgl';
-import { Game } from "./webgl_react.js";
+import { BufferUtils, ShaderUtils, UniformUtils } from '../lib/webgl';
+import { Game } from "../webgl_react.js";
 
 
 export class MyGame extends Game {
@@ -11,15 +11,16 @@ export class MyGame extends Game {
             1.0,
             1.0
         ];
+        this.state.customShader = "";
     }
 
     onWheel(e){
         if(e.deltaY > 0) {
             console.log('down');
-            this.zoom[0] /= 2;
+            this.zoom[0] += 1;
         }else {
             console.log('up');
-            this.zoom[0] *= 2;
+            this.zoom[0] -= 1;
         }
     }
 
@@ -39,9 +40,9 @@ export class MyGame extends Game {
         let frag = gl.createShader(gl.FRAGMENT_SHADER);
         let frac_frag = gl.createShader(gl.FRAGMENT_SHADER);
 
-        const vertShader = require('./glsl/vert.glsl');
-        const fragShader = require('./glsl/frag.glsl');
-        const fracShader = require('./glsl/frac.glsl');
+        const vertShader = require('../glsl/vert.glsl');
+        const fragShader = require('../glsl/frag.glsl');
+        const fracShader = require('../glsl/frac.glsl');
 
 
         gl.shaderSource(vert, vertShader);
@@ -98,7 +99,6 @@ export class MyGame extends Game {
         //this.fbos[0] = gl.createFramebuffer();
 
         console.log("WebGL Game initialized");
-
     }
 
     glRender(gl, delta) {
