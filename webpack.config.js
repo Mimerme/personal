@@ -14,8 +14,11 @@ module.exports = {
     path: dist,
     filename: "[name].js"
   },
+  //https://stackoverflow.com/questions/70309830/webpack-dev-server-config-contentbase-not-working
   devServer: {
-    contentBase: dist,
+    static: {
+      directory: dist,
+    },
   },
   plugins: [
     new CopyPlugin([

@@ -5,106 +5,42 @@ import SeedRandom from './lib/seed_random.js';
 import Game from './webgl_react.js'
 import {React, useState, useEffect} from 'react'
 import {init, render, clean, MyGame} from './toys/my_game.js'
+import {FractalAnimationComponent} from './toys/fractal_animation.js'
 import Debug from './components/debug.js'
 import Profile from './components/profile.js'
 
-function Particle(props){
-    let cssTransform = [];
 
-    // <svg viewBox="0 0 50.5 0.5" className="gameobject particle" style={cssTransform}>
-    //     <path d="M 0 0 L 50 0" stroke="#FFFFFF" strokeWidth="0.5"/>
-    // </svg>
-    return(
-        <div className="particle"></div>
-    );
-}
+// Psuedo-Randomly selects a background animation  
+function AnimationComponent(props){
+    // Put new background animations here whenever
+    const animations = [];
 
-function HalfLifeAnimation(props){
-    // Randomly start the partical loops
-    let random = Math.random();
-
-    // Based on the performance of the machine adjust the number of rendered particles
-    let particleCount = props.count;
-    let x = props.startX;
-    let y = props.startY;
-    let z = props.startZ;
-
-    let init = Array(particleCount)
-    // ffill() needs to be called because Javascript map() skips undefined elements
-    .fill(0)
-    .map((elem, idx) => {return (<Particle x={0} y={0} z={0} class="particle" key={idx}/>)});
-    let [particles, setParticles] = useState(init);
-    console.log(init);
-
-    return (<>
-        {particles}
-    </>);
-}
-
-// The Game component is the bridge between the React event loop and WebGL graphics layer
-function FractalAnimation(props){
-    let [zoom, setZoom] = useState([1.0, 1.0]);
-    return (
-        <>
-            <MyGame/>
-        </>
-    );
-}
-
-
-function Animation(props){
-    // NOTE: Wrapping these promises within a functional React.Component will create new ones every render()
-    //navigator.getBattery().then((battery) => {
-    //})
-    // useEffect is the best option to avoid this
-    // A general rule of thumb is that async functions in React go into useEffect becuz React is asyncronisly designed
-    // let [batLevel, setBatLevel] = useState(1.0);
-    // useEffect(() => {
-    //     async function getBatLevel(){
-    //         try {
-    //             let battery = await navigator.getBattery();
-    //             setBatLevel(battery.level);
-    //         }
-    //         catch(e){
-    //             console.log("No battery detected");
-    //         }
-    //     }
-    //     getBatLevel();
-    // },[]);
-    
     if (GLUtils.webgl_support()){
         console.log("WebGL supported :)");
+        animations.push(<FractalAnimationComponent/>);
+    }
 
-        // if (batLevel <= 0.25){
-        //     console.log("Battery too low. Running SVG animation");
-        //     return (<HalfLifeAnimation count={1}/>);
-        // }
-        return (<FractalAnimation/>)
-    }
-    else {
-        console.log("WebGL not supported :(");
-        // return (<HalfLifeAnimation count={1}/>);
-    }
+    // Randomly select a random seed
+    let seed = props.seed;
+    let rng = new SeedRandom();
+    let random = Math.floor(rng.randomWithSeed(seed) * animations.length);
+    return animations[random];
 }
 
+// Init Code Here
 function App(props) {
-    let seedEngine = new SeedRandom();
     let seed = SeedRandom.hashCode(props.seed);
-
-    
 
     return (
     <>
         <Debug debug={props.debug}/>
-        <Profile random={seedEngine} seed={seed}/>
-        <Animation random={seedEngine} seed={seed}/>
+        <Profile random={new SeedRandom()} seed={seed} fullname="Andros Yang" title="IT Analyst @ Deloitte" subtitle="Full Stack Dev @ Night" desc="Maker of things, master of none. That computer 💻 thing seems pretty neat, I wonder what I can do with it."/>
+        <AnimationComponent seed={seed}/>
     </>);
 }
 
-// Init Code Here
 const div_root = document.createElement("div");
 document.body.appendChild(div_root);
 const root = createRoot(div_root);
 root.render(<App debug="false" seed="69420"/>);
-
 console.log("Wuzz Gud. Here's some console stuff to debug the animation and website\n");

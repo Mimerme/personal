@@ -18,7 +18,7 @@ vec2 as_polar(vec2 z) {
 vec2 cx_tan(vec2 a) {return cx_div(cx_sin(a), cx_cos(a)); }
 vec2 cx_log(vec2 a) {
     vec2 polar = as_polar(a);
-    float rpart = polar.x;
+    float rpart = polar.xs
     float ipart = polar.y;
     if (ipart > PI) ipart=ipart-(2.0*PI);
     return vec2(log(rpart),ipart);

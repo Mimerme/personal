@@ -7,6 +7,7 @@ export class Game extends React.Component{
         super(props);
 
         this.canvas = React.createRef();
+        // Create a state for the Game Component
         this.state = {
             width:window.innerWidth,
             height:window.innerHeight,
@@ -27,18 +28,26 @@ export class Game extends React.Component{
 
 
     render(){
+        console.log("Rendering");
         return (<canvas ref={this.canvas} 
-            width={this.state.width} height={this.state.height} 
+            width={1000} height={1000} 
             onWheel={this.onWheel.bind(this)}></canvas>);
     }
 
+    // The canvas Ref will be created by this point in the lifecycle
     componentDidMount(){
         this.gl = new WebGL(this.canvas.current);
         this.glInit(this.gl.ctx);
         this.gl.start_anim(this.glRender.bind(this));
+
+        this.onLoad();
     }
 
     onWheel(){
+        throw "Needs implementation";
+    }
+
+    onLoad(){
         throw "Needs implementation";
     }
 
@@ -58,7 +67,7 @@ export class Game extends React.Component{
 
 
 // Reimplementation of the above with hooks
-export function GameFunctional(props){
-    return (<canvas ref={this.canvas_ref} 
-        width={this.state.width} height={this.state.height}></canvas>);
-}
+// export function GameFunctional(props){
+//     return (<canvas ref={this.canvas_ref} 
+//         width={this.state.width} height={this.state.height}></canvas>);
+// }

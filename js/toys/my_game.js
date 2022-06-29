@@ -1,27 +1,57 @@
 import { BufferUtils, ShaderUtils, UniformUtils } from '../lib/webgl';
 import { Game } from "../webgl_react.js";
+import { tween } from 'shifty';
+const TWEEN = require('@tweenjs/tween.js')
 
 
+// Example of a React-WebGL game
 export class MyGame extends Game {
     constructor(props) {
-        super(props);
+        super(props, {});
+        // this.state.frameCount = 0;
+        // this.state.runTime = 0.0;
+        // this.state.zoom = [
+        //     1.0,
+        //     1.0
+        // ];
+        // this.state.customShader = "";
         this.frameCount = 0;
         this.runTime = 0.0;
-        this.zoom = [
-            1.0,
-            1.0
-        ];
-        this.state.customShader = "";
+        //  TODO: Only the first paremter is used since the mandelbrot set is normally visualized in such a viewport
+        this.zoom = [1000.0, 1.0];
+    }
+
+    onLoad(){
+        console.log("Test Game Loaded in Document");
+
+        let iter = {var: this.zoom[0]};
+        new TWEEN.Tween(iter)
+            .to({var: -10001.0}, 10000 )
+            .onUpdate(function(o){
+                this.zoom[0] = o.var;
+            }.bind(this))
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start()
+
+
     }
 
     onWheel(e){
         if(e.deltaY > 0) {
-            console.log('down');
+            // console.log('down');
             this.zoom[0] += 1;
+            // this.setState((prev) => ({...prev, 
+            //     zoom: [this.state.zoom[0] + 1,0.0]}));
         }else {
-            console.log('up');
+            // console.log('up');
             this.zoom[0] -= 1;
+            // this.setState((prev) => ({...prev, 
+            //     zoom: [this.state.zoom[0] - 1,0.0]}));
+            // this.setState({...this.state, 
+            //     zoom: [this.state.zoom[0] - 1,0.0]}
+            // );
         }
+        console.log(this.zoom);
     }
 
     glInit(gl) {
@@ -69,7 +99,6 @@ export class MyGame extends Game {
 
 
         this.program = gl.createProgram();
-        console.log(this.program);
         gl.attachShader(this.program, vert);
         gl.attachShader(this.program, frac_frag);
         gl.linkProgram(this.program);
@@ -119,5 +148,11 @@ export class MyGame extends Game {
 
         this.frameCount += 1;
         this.runTime += delta;
+        // this.setState({...this.state, 
+        //     frameCount: this.state.frameCount + 1,
+        //     runTime: this.state.runTime + delta,
+        // });
+        console.log("hello");
+        TWEEN.update();
     }
 }

@@ -1,9 +1,14 @@
 :root {
-    --color-one: #06326B;
-    --color-two: #0D0B0C;
-    --color-three: #292B52;
+    --color-one: #ffffff;
+    --color-two: #ffffff;
+    --color-three: #ffffff;
     --color-four: #29524D;
     --color-five: #2C4867;
+}
+
+
+.crt-swipe {
+    clip-path: polygon(5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
 }
 
 .particle {

@@ -9,8 +9,8 @@ export default class SeedRandom{
     }
     // Takes any integer
     seed(i) {
-        this.m_w = (123456789 + this.i) & this.mask;
-        this.m_z = (987654321 - this.i) & this.mask;
+        this.m_w = (123456789 + i) & this.mask;
+        this.m_z = (987654321 - i) & this.mask;
     }
     // Returns number between 0 (inclusive) and 1.0 (exclusive),
     // just like Math.random().

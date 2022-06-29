@@ -10,15 +10,15 @@ export class GLUtils{
     }
 
     // TODO; idk. I don't nthink this works
-    static webgl2_support() {
-        try {
-            var canvas = document.createElement('canvas');
-            return !!window.WebGLRenderingContext &&
-                (canvas.getContext('webgl2'));
-        } catch (e) {
-            return false;
-        }
-    }
+    // static webgl2_support() {
+    //     try {
+    //         var canvas = document.createElement('canvas');
+    //         return !!window.WebGLRenderingContext &&
+    //             (canvas.getContext('webgl2'));
+    //     } catch (e) {
+    //         return false;
+    //     }
+    // }
 }
 
 export default class WebGL{

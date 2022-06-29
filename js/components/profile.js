@@ -1,27 +1,28 @@
 const splashes = ["Do-oer of things"];
 import "./profile.scss";
 import {React, useState, useEffect} from 'react';
+import SeedRandom from "../lib/seed_random";
 
 export default function Profile(props) {
-    console.log(props);
-    let type1 = Math.floor(props.random.randomWithSeed(props.seed) * 3);
-    let type2 = Math.floor(props.random.randomWithSeed(props.seed) * splashes.length);
+    let rng = new SeedRandom();
+    let type1 = Math.floor(rng.randomWithSeed(props.seed) * 3);
+    let type2 = Math.floor(rng.randomWithSeed(props.seed) * splashes.length);
 
             return (
 
                 <div className="card" data-state="#about">
                     <div className="card-header">
-                        <div className="card-cover" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1549068106-b024baf5062d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80")' }} />
-                        <img className="card-avatar" src="https://images.unsplash.com/photo-1549068106-b024baf5062d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" alt="avatar" />
-                        <h1 className="card-fullname">William Rocheald</h1>
-                        <h2 className="card-jobtitle">UI Developer</h2>
+                        <div className="card-cover" style={{ backgroundImage: 'url("6308253.jpeg")' }} />
+                        <img className="card-avatar" src="6308253.jpeg" alt="avatar" />
+                        <h1 className="card-fullname">{props.fullname}</h1>
+                        <h2 className="card-jobtitle">{props.title}</h2>
+                        <h2 className="card-subjobtitle">{props.subtitle}</h2>
                     </div>
                     <div className="card-main">
                         <div className="card-section is-active" id="about">
                             <div className="card-content">
                                 <div className="card-subtitle">ABOUT</div>
-                                <p className="card-desc">Whatever tattooed stumptown art party sriracha gentrify hashtag intelligentsia readymade schlitz brooklyn disrupt.
-                                </p>
+                                <p className="card-desc">{props.desc}</p>
                             </div>
                             <div className="card-social">
                                 <a href="#"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

@@ -52,23 +52,26 @@ plane is displayed. */
 //uniform float u_zoomSize;
 
 const int threshold = 100;
-const vec2 realX = vec2(-0.22, -0.219);
-const vec2 imagY = vec2(-0.70,-0.699);
+const vec2 realX = vec2(-2, 3);
+const vec2 imagY = vec2(-2,2);
 
 // This is the meat that creates the visualization 
 int iterTillDiverge(vec2 c){
-    vec2 z = vec2(0,0);
+    vec2 z = vec2(0.0,0.0); 
 
     int j;
     for(int i=0;i<threshold;i++){
         z = cx_mul(z, z) + c;
 
         //  Magnitude of the complex number
+        // This is an indication of convergence 
         if(length(z) > 4.0){
             return i;
         }
         j++;
     }
+
+    // Indication of divergence
     return j;
 }
 
@@ -87,7 +90,10 @@ float axisRatio(vec2 axis, float ratio){
 //mediump vec4 gl_FragData[n]
 
 void main() {
+    // For every pixel...
     vec2 uv = gl_FragCoord.xy / u_resolution;
+
+    // Iterate until the fractal diverges
     int res = iterTillDiverge(gl_FragCoord.xy);
 
 
@@ -98,15 +104,27 @@ void main() {
     // vec2 zoomY = imagY - vec2(-0.01 * float(u_frame),+0.01*float(u_frame));
     //vec2 zoomX = realX * (float(u_frame) / 1000.0);
     //vec2 zoomY = imagY * (float(u_frame) / 1000.0);
-    vec2 zoomX = realX + vec2(float(u_zoom[0]) * 0.001, float(u_zoom[0]) * -0.001);
-    vec2 zoomY = imagY + vec2(float(u_zoom[0]) * 0.001, float(u_zoom[0]) * -0.001);
+
+    // vec2 zoomX = realX + vec2(float(u_zoom[0]) * 0.001, float(u_zoom[0]) * -0.001);
+    // vec2 zoomY = imagY + vec2(float(u_zoom[0]) * 0.001, float(u_zoom[0]) * -0.001);
+
     //vec2 zoomY = imagY * (float(u_zoom[0]));
-    //vec2 zoomX  = realX * u_zoom.x;
-    //vec2 zoomY  = imagY * u_zoom.y;
+    vec2 zoomX  = realX;
+    vec2 zoomY  = imagY;
 
-    vec2  pt = vec2(axisRatio(zoomX, uv.x), axisRatio(zoomY, uv.y));
+    vec2 pt = vec2(axisRatio(zoomX, uv.x), axisRatio(zoomY, uv.y));
     float ret = (float(iterTillDiverge(pt)) / float(threshold));
+    // 1 on divergence
+    // 0-1 non inclusive anything else
 
-    gl_FragColor = vec4(ret,ret,ret,1.0-ret);
+    if (ret == 1.0){
+        gl_FragColor = vec4(0.0,0.0,0.0,0.0);
+    }
+    else if (ret < 1.0 && ret > 0.5){
+        gl_FragColor = vec4(ret,0.0,ret,1.0-ret);
+    }
+    else if (ret <= 0.5){
+        gl_FragColor = vec4(0.0,0.0,ret,1.0-ret);
+    }
     //gl_FragColor = vec3(u_zoom[-1], 0.0, 0.0,1.0);
 }
