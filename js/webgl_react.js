@@ -20,17 +20,24 @@ export class Game extends React.Component{
 
         // Window Event Handlers
         window.onresize = function(){
+            console.log("yo");
             let w = window.innerWidth;
             let h = window.innerHeight;
             this.setState((prev) => ({...prev,width:w,height:h}));
+
+            this.gl = new WebGL(this.canvas.current);
+            this.glInit(this.gl.ctx);
+            this.gl.start_anim(this.glRender.bind(this));
+            this.onLoad();
+
         }.bind(this);
     }
 
 
     render(){
-        console.log("Rendering");
+        window.onresize.bind(this);
         return (<canvas ref={this.canvas} 
-            width={1000} height={1000} 
+            width={this.state.width} height={this.state.height} 
             onWheel={this.onWheel.bind(this)}></canvas>);
     }
 
@@ -39,7 +46,6 @@ export class Game extends React.Component{
         this.gl = new WebGL(this.canvas.current);
         this.glInit(this.gl.ctx);
         this.gl.start_anim(this.glRender.bind(this));
-
         this.onLoad();
     }
 

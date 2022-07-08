@@ -39,7 +39,7 @@ uniform float     u_timeDelta;            // render time (in seconds)
 uniform int       u_frame;                // shader playback frame
 
 uniform vec2 u_zoom;
-
+uniform vec2 u_trans;
 
 
 /* Point on the complex plane that will be mapped to the center of the screen */
@@ -52,15 +52,26 @@ plane is displayed. */
 //uniform float u_zoomSize;
 
 const int threshold = 100;
-const vec2 realX = vec2(-2, 3);
-const vec2 imagY = vec2(-2,2);
+// const vec2 realX = vec2(-2, 3);
+// const vec2 imagY = vec2(-2,3);
+
+
+const vec2 realX = vec2(-1.0, 1.0);
+const vec2 imagY = vec2(-1.0, 1.0);
+
+const vec2 TRANSLATE = vec2(-1.5,0.005);
 
 // This is the meat that creates the visualization 
 int iterTillDiverge(vec2 c){
     vec2 z = vec2(0.0,0.0); 
 
     int j;
+    int lim = int(float(threshold));
     for(int i=0;i<threshold;i++){
+        if(i >= lim){
+            break;
+        }
+
         z = cx_mul(z, z) + c;
 
         //  Magnitude of the complex number
@@ -90,6 +101,9 @@ float axisRatio(vec2 axis, float ratio){
 //mediump vec4 gl_FragData[n]
 
 void main() {
+    // gl_FragColor = vec4(0.5,0.5,0.5,1.0);
+    // return;
+
     // For every pixel...
     vec2 uv = gl_FragCoord.xy / u_resolution;
 
@@ -105,26 +119,47 @@ void main() {
     //vec2 zoomX = realX * (float(u_frame) / 1000.0);
     //vec2 zoomY = imagY * (float(u_frame) / 1000.0);
 
-    // vec2 zoomX = realX + vec2(float(u_zoom[0]) * 0.001, float(u_zoom[0]) * -0.001);
-    // vec2 zoomY = imagY + vec2(float(u_zoom[0]) * 0.001, float(u_zoom[0]) * -0.001);
+    // vec2 zoomX = realX + vec2(float(u_zoom[0]) * -0.001, float(u_zoom[0]) * 0.001);
+    // vec2 zoomY = imagY + vec2(float(u_zoom[0]) * -0.001, float(u_zoom[0]) * 0.001);
 
     //vec2 zoomY = imagY * (float(u_zoom[0]));
-    vec2 zoomX  = realX;
-    vec2 zoomY  = imagY;
+    vec2 zoomX  = realX * 0.01 + TRANSLATE.xx;
+    vec2 zoomY  = imagY * 0.01 + TRANSLATE.yy;
+
 
     vec2 pt = vec2(axisRatio(zoomX, uv.x), axisRatio(zoomY, uv.y));
     float ret = (float(iterTillDiverge(pt)) / float(threshold));
-    // 1 on divergence
-    // 0-1 non inclusive anything else
 
-    if (ret == 1.0){
-        gl_FragColor = vec4(0.0,0.0,0.0,0.0);
+    // Animation playing
+    const float anim_length = 2.0;
+    if (u_time <= anim_length){
+        // 1 on divergence
+        // 0-1 non inclusive anything else
+
+        if (ret == 1.0){
+            gl_FragColor = vec4(0.0,0.0,0.0,1.0);
+        }
+        else if (ret < 1.0 && ret > 0.25 * ((1.0 + cos(u_time)) / 2.0)){
+            gl_FragColor = vec4(0.0,ret*ret * 2.0,ret * ret * 2.0,1.0);
+        }
+        else if (ret <= 0.25 * ((1.0 + -1.0 * cos(u_time)) / 2.0)){
+            //gl_FragColor = vec4((cos(u_time) + 1.0) / 2.0,0.0,ret,1.0-ret);
+            gl_FragColor = vec4(0.0,ret*ret,ret * ret,1.0);
+        }
     }
-    else if (ret < 1.0 && ret > 0.5){
-        gl_FragColor = vec4(ret,0.0,ret,1.0-ret);
+    else {
+        if (ret == 1.0){
+            gl_FragColor = vec4(0.0,0.0,0.0,1.0);
+        }
+        else if (ret < 1.0 && ret > 0.25 * ((1.0 + cos(anim_length))) / 2.0){
+            gl_FragColor = vec4(0.0,ret*ret * 2.0,ret * ret * 2.0,1.0);
+        }
+        else if (ret <= 0.25 * ((1.0 + -1.0 * cos(anim_length)) / 2.0)){
+            //gl_FragColor = vec4((cos(u_time) + 1.0) / 2.0,0.0,ret,1.0-ret);
+            gl_FragColor = vec4(0.0,ret*ret,ret * ret,1.0);
+        }
     }
-    else if (ret <= 0.5){
-        gl_FragColor = vec4(0.0,0.0,ret,1.0-ret);
-    }
+
+
     //gl_FragColor = vec3(u_zoom[-1], 0.0, 0.0,1.0);
 }

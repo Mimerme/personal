@@ -8,6 +8,7 @@ import {init, render, clean, MyGame} from './toys/my_game.js'
 import {FractalAnimationComponent} from './toys/fractal_animation.js'
 import Debug from './components/debug.js'
 import Profile from './components/profile.js'
+import './konami.js';
 
 
 // Psuedo-Randomly selects a background animation  

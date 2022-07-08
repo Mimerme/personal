@@ -10,7 +10,7 @@ export class MyGame extends Game {
         super(props, {});
         // this.state.frameCount = 0;
         // this.state.runTime = 0.0;
-        // this.state.zoom = [
+        // this.state.zoome= [
         //     1.0,
         //     1.0
         // ];
@@ -18,21 +18,43 @@ export class MyGame extends Game {
         this.frameCount = 0;
         this.runTime = 0.0;
         //  TODO: Only the first paremter is used since the mandelbrot set is normally visualized in such a viewport
-        this.zoom = [1000.0, 1.0];
+        this.zoom = [1.0, 1.0];
     }
 
     onLoad(){
         console.log("Test Game Loaded in Document");
+        return;
 
-        let iter = {var: this.zoom[0]};
-        new TWEEN.Tween(iter)
-            .to({var: -10001.0}, 10000 )
+        const START_ZOOM = 2000.0;
+        const END_ZOOM = 0.000000000000000000000000000000000000000000000000000000000000000001;
+
+        // In, Out, and Wait should equal PI secs
+        const IN_DURATION = 2000;
+        const WAIT_DURATION = 1145;
+        const OUT_DURATION = 2000;
+
+        let iterIn = {var: START_ZOOM};
+        let pulseIn = new TWEEN.Tween(iterIn)
+            .to({var: END_ZOOM}, IN_DURATION )
             .onUpdate(function(o){
                 this.zoom[0] = o.var;
             }.bind(this))
-            .easing(TWEEN.Easing.Exponential.InOut)
-            .start()
+            .easing(TWEEN.Easing.Cubic.InOut);
 
+        
+        let iterOut = {var: END_ZOOM};
+        let pulseOut = new TWEEN.Tween(iterOut)
+            .to({var: START_ZOOM}, OUT_DURATION )
+            .onUpdate(function(o){
+                this.zoom[0] = o.var;
+            }.bind(this))
+            .easing(TWEEN.Easing.Cubic.InOut)
+            .delay(WAIT_DURATION);
+        
+        pulseIn.chain(pulseOut);
+        pulseOut.chain(pulseIn);
+        pulseIn.start();
+        
 
     }
 
@@ -59,7 +81,7 @@ export class MyGame extends Game {
         // STATE LAYOUT
 
         // Initialize OpenGL features here
-        gl.clearColor(0.5, 0.5, 0.5, 1);
+        gl.clearColor(0.0, 0.0, 0.0, 1);
         gl.disable(gl.BLEND);
         gl.stencilMask(gl.FALSE);
         gl.enable(gl.DEPTH_TEST);
@@ -119,7 +141,7 @@ export class MyGame extends Game {
         //             1.0, -1.0, 1.0, 1.0, 1.0, -1.0];
         let verts = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0,
         -1.0, 1.0, 1.0, 1.0, 1.0, -1.0];
-        this.lineVertBuf = BufferUtils.static_webgl_buffer(gl, verts, gl.ARRAY_BUFFER);
+        this.lineVertBuf = BufferUtils.dynamic_webgl_buffer(gl, verts, gl.ARRAY_BUFFER);
         let posAttr = gl.getAttribLocation(this.program, "position");
         gl.enableVertexAttribArray(posAttr);
         gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, gl.FALSE, 0, 0);
@@ -131,11 +153,15 @@ export class MyGame extends Game {
     }
 
     glRender(gl, delta) {
+        //console.log(this.state);
+        gl.viewport(0.0,0.0,this.state.width, this.state.height);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         // Begin running the render pipeline here
         gl.useProgram(this.program);
-        UniformUtils.setUniform(gl, this.program, "u_resolution", new Float32Array([this.state.width, this.state.height]), gl.uniform2fv);
+        let r = Math.max(this.state.height, this.state.width);
+        console.log(r);
+        UniformUtils.setUniform(gl, this.program, "u_resolution", new Float32Array([r,r]), gl.uniform2fv);
         UniformUtils.setUniform(gl, this.program, "u_time", Math.fround(this.runTime), gl.uniform1f);
         UniformUtils.setUniform(gl, this.program, "u_timeDelta", Math.fround(0.0), gl.uniform1f);
         UniformUtils.setUniform(gl, this.program, "u_frame", Math.fround(this.frameCount), gl.uniform1i);

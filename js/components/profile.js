@@ -8,8 +8,9 @@ export default function Profile(props) {
     let type1 = Math.floor(rng.randomWithSeed(props.seed) * 3);
     let type2 = Math.floor(rng.randomWithSeed(props.seed) * splashes.length);
 
-            return (
+    return (<div></div>);
 
+            return (
                 <div className="card" data-state="#about">
                     <div className="card-header">
                         <div className="card-cover" style={{ backgroundImage: 'url("6308253.jpeg")' }} />
