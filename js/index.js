@@ -6,9 +6,13 @@ import Game from './webgl_react.js'
 import {React, useState, useEffect} from 'react'
 import {init, render, clean, MyGame} from './toys/my_game.js'
 import {FractalAnimationComponent} from './toys/fractal_animation.js'
-import Debug from './components/debug.js'
-import Profile from './components/profile.js'
 import './konami.js';
+
+
+import Debug from './components/debug.js'
+import Projects from './components/projects.js'
+import Profile from './components/profile.js'
+import TopBar from './components/topbar.js'
 
 
 // Psuedo-Randomly selects a background animation  
@@ -34,6 +38,7 @@ function App(props) {
 
     return (
     <>
+        <TopBar/>
         <Debug debug={props.debug}/>
         <Profile random={new SeedRandom()} seed={seed} fullname="Andros Yang" title="IT Analyst @ Deloitte" subtitle="Full Stack Dev @ Night" desc="Maker of things, master of none. That computer 💻 thing seems pretty neat, I wonder what I can do with it."/>
         <AnimationComponent seed={seed}/>
