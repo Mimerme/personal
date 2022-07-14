@@ -73,7 +73,6 @@ export class MyGame extends Game {
             //     zoom: [this.state.zoom[0] - 1,0.0]}
             // );
         }
-        console.log(this.zoom);
     }
 
     glInit(gl) {
@@ -160,7 +159,6 @@ export class MyGame extends Game {
         // Begin running the render pipeline here
         gl.useProgram(this.program);
         let r = Math.max(this.state.height, this.state.width);
-        console.log(r);
         UniformUtils.setUniform(gl, this.program, "u_resolution", new Float32Array([r,r]), gl.uniform2fv);
         UniformUtils.setUniform(gl, this.program, "u_time", Math.fround(this.runTime), gl.uniform1f);
         UniformUtils.setUniform(gl, this.program, "u_timeDelta", Math.fround(0.0), gl.uniform1f);
@@ -178,7 +176,6 @@ export class MyGame extends Game {
         //     frameCount: this.state.frameCount + 1,
         //     runTime: this.state.runTime + delta,
         // });
-        console.log("hello");
         TWEEN.update();
     }
 }

@@ -9,10 +9,14 @@ import {FractalAnimationComponent} from './toys/fractal_animation.js'
 import './konami.js';
 
 
-import Debug from './components/debug.js'
-import Projects from './components/projects.js'
-import Profile from './components/profile.js'
-import TopBar from './components/topbar.js'
+import Debug from './components/debug.js';
+import Projects from './components/projects.js';
+import Profile from './components/profile.js';
+import TopBar from './components/topbar.js';
+import Hero from './components/hero.js';
+import Footer from './components/footer.js';
+
+import './components/profile.scss';
 
 
 // Psuedo-Randomly selects a background animation  
@@ -38,10 +42,20 @@ function App(props) {
 
     return (
     <>
-        <TopBar/>
         <Debug debug={props.debug}/>
-        <Profile random={new SeedRandom()} seed={seed} fullname="Andros Yang" title="IT Analyst @ Deloitte" subtitle="Full Stack Dev @ Night" desc="Maker of things, master of none. That computer 💻 thing seems pretty neat, I wonder what I can do with it."/>
+
         <AnimationComponent seed={seed}/>
+        <TopBar/>
+        <Hero/>
+        <Projects/>
+        <section style={{
+            height: '50vh',
+            background: 'blue',
+        }}>
+            <Profile random={new SeedRandom()} seed={seed} fullname="Andros Yang" title="IT Analyst @ Deloitte" subtitle="Full Stack Dev @ Night" desc="Maker of things, master of none. That computer 💻 thing seems pretty neat, I wonder what I can do with it."/>
+            {/* <Resume filepath="Resume"/> */}
+        </section>
+        <Footer/>
     </>);
 }
 

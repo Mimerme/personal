@@ -1,10 +1,10 @@
-:root {
+/* :root {
     --color-one: #ffffff;
     --color-two: #ffffff;
     --color-three: #ffffff;
     --color-four: #29524D;
     --color-five: #2C4867;
-}
+} */
 
 
 .crt-swipe {
@@ -59,15 +59,4 @@
 @font-face {
     font-family: Karla;
     src: url(fonts/Karla-VariableFont_wght.ttf);
-}
-
-h1 {
-    font-family: HindGuntur;
-    color: var(--color-one);
-    /*text-shadow: 3px 3px var(--color-two);*/
-}
-
-h2 {
-    font-family: HindGuntur;
-    color: var(--color-three);
 }

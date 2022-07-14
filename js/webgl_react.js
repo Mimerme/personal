@@ -20,15 +20,23 @@ export class Game extends React.Component{
 
         // Window Event Handlers
         window.onresize = function(){
-            console.log("yo");
+
+        // Check window width has actually changed and it's not just iOS triggering a resize event on scroll
+        if (window.innerWidth != this.state.width) {
+
+            // Update the window width for next time
             let w = window.innerWidth;
             let h = window.innerHeight;
             this.setState((prev) => ({...prev,width:w,height:h}));
 
+            // Do stuff here
             this.gl = new WebGL(this.canvas.current);
             this.glInit(this.gl.ctx);
             this.gl.start_anim(this.glRender.bind(this));
             this.onLoad();
+        }
+
+
 
         }.bind(this);
     }
