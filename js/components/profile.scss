@@ -62,6 +62,22 @@ canvas {
     background: black;
 }
 
+#projects {
+  h1 {
+      font-size: 2rem;
+      color: white;
+      text-align: center;
+  }
+}
+
+.project-thumb{
+  box-shadow: 0.5rem 0.5rem;
+  background: black;
+  width: 10rem;
+  height: 10rem;
+  margin: 1rem;
+}
+
 #hero > div {
       flex-direction: column;
       // background-image: linear-gradient(to right, rgba(0.0,0.0,0.0,0.0), rgba(0.0,0.0,0.0,1.0), rgba(0.0,0.0,0.0,0.0));

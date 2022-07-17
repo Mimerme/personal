@@ -20,6 +20,13 @@ export default function TopBar(props) {
                         color: 'navy'
                     }}>Contact</a>
                 </li>
+
+                <li>
+                    <a href="#blog" style={{
+                        textDecoration: 'none',
+                        color: 'navy'
+                    }}>Blog</a>
+                </li>
             </ul>
         </nav>
     );

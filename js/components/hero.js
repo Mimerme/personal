@@ -21,7 +21,7 @@ export default function Hero(props){
                     }}>
                     <a href="#projects" type="button" class="hero-button">Portfolio</a>
 
-                    <a href="#projects" type="button" class="hero-button">Resume</a>
+                    <a href="#resume" type="button" class="hero-button">Resume</a>
                 </div>
             </div>
         </section>

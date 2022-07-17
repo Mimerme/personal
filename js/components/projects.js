@@ -1,12 +1,10 @@
 export default function Projects(props){
     return(
         <section id="projects">
+            <h1>Projects</h1>
             <div class="projects container">
                 <ProjectInfo/>
                 <ProjectList/>
-
-                <h1>Test</h1>
-                <h1>Tes2</h1>
             </div>
         </section>
     );
@@ -18,6 +16,7 @@ function ProjectInfo(props){
     }}>
 
 
+
     </section>);
 }
 
@@ -27,5 +26,10 @@ function ProjectList(props){
             display: 'flex',
             flexWrap: 'wrap'
         }}
-    ></section>);
+    >
+        <div class="project-thumb"></div>
+        <div class="project-thumb"></div>
+        <div class="project-thumb"></div>
+        <div class="project-thumb"></div>
+    </section>);
 }
